@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform, useInView, AnimatePresence } from 'motion/react';
+import { motion, useScroll, useTransform, useInView, AnimatePresence, useSpring } from 'motion/react';
 import { 
   Briefcase, 
   Globe, 
@@ -114,6 +114,7 @@ const Marquee = () => {
 
 const FloatingCTA = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [activeLabel, setActiveLabel] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => setIsVisible(window.scrollY > 500);
@@ -121,36 +122,73 @@ const FloatingCTA = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const buttons = [
+    { 
+      id: 'whatsapp',
+      text: "WhatsApp", 
+      icon: <MessageSquare className="w-4 h-4 md:w-6 md:h-6" />, 
+      href: "https://wa.me/#", 
+      color: "bg-green-500 text-white",
+      shadow: "shadow-green-500/40"
+    },
+    { 
+      id: 'top',
+      text: "Back to Top", 
+      icon: <ArrowUp className="w-4 h-4 md:w-6 md:h-6" />, 
+      onClick: () => window.scrollTo({ top: 0, behavior: 'smooth' }),
+      color: "bg-deep-blue text-gold",
+      shadow: "shadow-deep-blue/30"
+    }
+  ];
+
   return (
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          initial={{ opacity: 0, scale: 0.5, y: 50 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.5, y: 50 }}
-          className="fixed bottom-12 right-12 z-50 flex flex-col gap-6"
+          initial={{ opacity: 0, scale: 0.5, x: 50 }}
+          animate={{ opacity: 1, scale: 1, x: 0 }}
+          exit={{ opacity: 0, scale: 0.5, x: 50 }}
+          className="fixed bottom-4 right-4 md:bottom-10 md:right-10 z-50 flex flex-col gap-3 md:gap-4 items-end"
         >
-          <Tooltip text="Direct WhatsApp">
-            <motion.a 
-              whileHover={{ scale: 1.1, rotate: 5 }}
-              whileTap={{ scale: 0.9 }}
-              href="https://wa.me/#" 
-              target="_blank" 
-              className="w-16 h-16 bg-green-500 text-white rounded-[24px] flex items-center justify-center shadow-[0_20px_50px_-10px_rgba(34,197,94,0.4)] transition-all"
-            >
-              <MessageSquare size={28} />
-            </motion.a>
-          </Tooltip>
-          <Tooltip text="Back to Top">
-            <motion.button 
-              whileHover={{ scale: 1.1, y: -5 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="w-16 h-16 bg-deep-blue text-gold rounded-[24px] flex items-center justify-center shadow-[0_20px_50px_-10px_rgba(10,10,10,0.3)] transition-all border border-white/5"
-            >
-              <ArrowUp size={28} />
-            </motion.button>
-          </Tooltip>
+          {buttons.map((btn) => (
+            <div key={btn.id} className="relative flex items-center gap-3">
+              <AnimatePresence>
+                {activeLabel === btn.id && (
+                  <motion.div
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 20 }}
+                    className="bg-deep-blue text-gold text-[9px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border border-gold/20 shadow-2xl whitespace-nowrap"
+                  >
+                    {btn.text}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+              
+              <motion.div
+                onMouseEnter={() => setActiveLabel(btn.id)}
+                onMouseLeave={() => setActiveLabel(null)}
+                onClick={() => {
+                  if (activeLabel === btn.id) {
+                    if (btn.onClick) btn.onClick();
+                    if (btn.href) window.open(btn.href, '_blank');
+                    setActiveLabel(null);
+                  } else {
+                    setActiveLabel(btn.id);
+                  }
+                }}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className={cn(
+                  "w-10 h-10 md:w-14 md:h-14 rounded-xl md:rounded-[20px] flex items-center justify-center cursor-pointer transition-all duration-500 shadow-2xl border border-white/5",
+                  btn.color,
+                  btn.shadow
+                )}
+              >
+                {btn.icon}
+              </motion.div>
+            </div>
+          ))}
         </motion.div>
       )}
     </AnimatePresence>
@@ -169,23 +207,23 @@ const Navbar = () => {
 
   return (
     <nav className={cn(
-      "fixed top-0 left-0 right-0 z-50 transition-all duration-700 px-8 py-6",
+      "fixed top-0 left-0 right-0 z-50 transition-all duration-700 px-0 py-6",
       isScrolled ? "bg-white/90 backdrop-blur-xl border-b border-deep-blue/5 py-4" : "bg-transparent"
     )}>
-      <div className="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-8">
+      <div className="max-w-7xl mx-auto flex items-center justify-between px-6 md:px-12">
         <motion.div 
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          className="flex items-center gap-4 group cursor-pointer"
+          className="flex items-center gap-3 md:gap-4 group cursor-pointer"
         >
-          <div className="w-12 h-12 bg-deep-blue rounded-full flex items-center justify-center text-gold font-serif text-2xl font-bold transition-transform duration-500 group-hover:rotate-[360deg]">
+          <div className="w-10 h-10 md:w-12 md:h-12 shrink-0 aspect-square bg-deep-blue rounded-full flex items-center justify-center text-gold font-serif text-xl md:text-2xl font-bold transition-transform duration-500 group-hover:rotate-[360deg]">
             U
           </div>
           <div className="flex flex-col">
-            <span className="text-xl font-serif font-bold tracking-tight text-deep-blue leading-none">
+            <span className="text-lg md:text-xl font-serif font-bold tracking-tight text-deep-blue leading-none">
               URJA <span className="font-light italic">CONSULTANCY</span>
             </span>
-            <span className="text-[8px] uppercase tracking-[0.5em] text-gold font-bold mt-1">Strategic Authority</span>
+            <span className="text-[7px] md:text-[8px] uppercase tracking-[0.5em] text-gold font-bold mt-1">Strategic Authority</span>
           </div>
         </motion.div>
 
@@ -254,11 +292,16 @@ const Hero = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  const y1 = useTransform(scrollY, [0, 500], [0, isMobile ? 50 : 200]);
-  const rotate = useTransform(scrollY, [0, 500], [0, isMobile ? 2 : 10]);
+  const smoothScroll = useSpring(scrollY, { damping: 20, stiffness: 100 });
+  
+  // Desktop: Parallax down + Rotate + Scale
+  // Mobile: Subtle Float up + Scale (No Rotate)
+  const y1 = useTransform(smoothScroll, [0, 500], [0, isMobile ? -30 : 150]);
+  const rotate = useTransform(smoothScroll, [0, 500], [0, isMobile ? 0 : 8]);
+  const scale = useTransform(smoothScroll, [0, 500], [1, isMobile ? 1.05 : 1.1]);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center pt-32 md:pt-0 overflow-hidden bg-paper">
+    <section className="relative min-h-screen flex items-start lg:items-center justify-center pt-56 md:pt-72 lg:pt-40 xl:pt-0 overflow-hidden bg-paper">
       {/* Background Elements */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-deep-blue/5 skew-x-[-15deg] translate-x-20"></div>
@@ -281,10 +324,10 @@ const Hero = () => {
             
             <Reveal 
               delay={0.4} 
-              y={window.innerWidth < 768 ? 20 : 50} 
-              duration={window.innerWidth < 768 ? 0.6 : 0.8}
+              y={isMobile ? 20 : 50} 
+              duration={isMobile ? 0.6 : 0.8}
             >
-              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[clamp(3rem,8vw,7rem)] font-serif leading-[1.1] md:leading-[0.85] text-deep-blue tracking-tighter">
+              <h1 className="text-4xl sm:text-5xl md:text-5xl lg:text-7xl xl:text-[clamp(3rem,8vw,7rem)] font-serif leading-[1.1] md:leading-[1.1] text-deep-blue tracking-tighter">
                 Strategic <br />
                 <span className="italic font-light text-accent">Authority</span> <br />
                 <span className="relative">
@@ -292,8 +335,8 @@ const Hero = () => {
                   <motion.span 
                     initial={{ width: 0 }}
                     animate={{ width: "100%" }}
-                    transition={{ delay: 1.2, duration: 1 }}
-                    className="absolute -bottom-1 md:-bottom-2 left-0 h-1 md:h-2 bg-gold/20 -z-10"
+                    transition={{ delay: 1.0, duration: 0.8, ease: "circOut" }}
+                    className="absolute -bottom-1 md:-bottom-2 left-0 h-1 md:h-2 bg-gold/30 -z-10"
                   ></motion.span>
                 </span>
               </h1>
@@ -335,11 +378,11 @@ const Hero = () => {
 
         <div className="relative h-auto lg:h-[80vh] flex items-center justify-center mt-12 lg:mt-0 px-4 md:px-0">
           <motion.div 
-            style={{ y: y1, rotate }}
+            style={{ y: y1, rotate, scale }}
             className="relative w-full max-w-[320px] sm:max-w-md lg:max-w-xl aspect-[4/5] z-10"
           >
-            <div className="absolute -inset-2 md:-inset-4 border border-gold/20 rounded-[30px] md:rounded-[40px] -z-10 translate-x-2 md:translate-x-8 translate-y-2 md:translate-y-8"></div>
-            <div className="absolute -inset-2 md:-inset-4 border border-deep-blue/10 rounded-[30px] md:rounded-[40px] -z-10 -translate-x-1 md:-translate-x-4 -translate-y-1 md:-translate-y-4"></div>
+            <div className="absolute -inset-2 md:-inset-4 border border-gold/20 rounded-[30px] md:rounded-[40px] -z-10 translate-x-0 md:translate-x-8 translate-y-0 md:translate-y-8"></div>
+            <div className="absolute -inset-2 md:-inset-4 border border-deep-blue/10 rounded-[30px] md:rounded-[40px] -z-10 translate-x-0 md:-translate-x-4 translate-y-0 md:-translate-y-4"></div>
             
             <motion.div 
               className="w-full h-full rounded-[30px] md:rounded-[40px] overflow-hidden shadow-[0_20px_40px_-10px_rgba(10,25,47,0.3)] lg:shadow-[0_50px_100px_-20px_rgba(10,25,47,0.3)] group"
@@ -383,7 +426,7 @@ const Hero = () => {
           <motion.div 
             animate={{ y: [0, 20, 0] }}
             transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-            className="absolute bottom-[10%] -left-10 bg-deep-blue p-6 rounded-3xl shadow-2xl z-20 border border-white/10 hidden xl:block"
+            className="absolute bottom-[35%] -left-16 bg-deep-blue p-5 rounded-3xl shadow-2xl z-20 border border-white/10 hidden xl:block"
           >
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center text-gold">
@@ -460,11 +503,18 @@ const Services = () => {
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              whileInView={{ 
+                opacity: 1, 
+                y: 0,
+                backgroundColor: ["rgba(255,255,255,1)", "rgba(10,25,47,1)", "rgba(255,255,255,1)"] 
+              }}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ 
+                delay: i * 0.15,
+                backgroundColor: { duration: 1.5, times: [0, 0.5, 1], delay: i * 0.2 + 0.5 }
+              }}
               className={cn(
                 "p-8 md:p-12 min-h-[400px] md:min-h-[500px] flex flex-col justify-between transition-all duration-500 group relative overflow-hidden rounded-3xl md:rounded-none border border-deep-blue/5 cursor-pointer",
                 s.color
@@ -474,17 +524,24 @@ const Services = () => {
               <div className="absolute inset-0 bg-deep-blue translate-y-full group-hover:translate-y-0 group-active:translate-y-0 transition-transform duration-500 ease-out z-0"></div>
               
               {/* Content Container */}
-              <div className="relative z-10 pointer-events-none transition-transform duration-500 group-hover:-translate-y-2 group-active:-translate-y-2">
+              <motion.div 
+                whileInView={{
+                  color: ["rgba(10,25,47,1)", "rgba(255,255,255,1)", "rgba(10,25,47,1)"]
+                }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 1.5, times: [0, 0.5, 1], delay: i * 0.2 + 0.5 }}
+                className="relative z-10 pointer-events-none transition-transform duration-500 group-hover:-translate-y-2 group-active:-translate-y-2"
+              >
                 <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-deep-blue mb-12 group-hover:bg-gold group-active:bg-gold transition-all duration-500 shadow-xl shadow-deep-blue/5">
                   {s.icon}
                 </div>
-                <h3 className="text-3xl font-serif mb-6 text-deep-blue group-hover:text-white group-active:text-white transition-colors duration-500">
+                <h3 className="text-3xl font-serif mb-6 text-current group-hover:text-white group-active:text-white transition-colors duration-500">
                   {s.title}
                 </h3>
-                <p className="text-ink/60 text-sm leading-relaxed mb-8 group-hover:text-white/80 group-active:text-white/80 transition-colors duration-500">
+                <p className="text-current opacity-60 text-sm leading-relaxed mb-8 group-hover:text-white/80 group-active:text-white/80 transition-colors duration-500">
                   {s.desc}
                 </p>
-              </div>
+              </motion.div>
 
               <div className="relative z-10 space-y-8 pointer-events-none">
                 <div className="flex flex-wrap gap-2">
@@ -658,6 +715,7 @@ const StrategySession = () => {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [formData, setFormData] = useState({ name: '', email: '' });
   const [errors, setErrors] = useState({ name: '', email: '' });
+  const [touched, setTouched] = useState({ name: false, email: false });
 
   const validate = (name: string, value: string) => {
     let error = '';
@@ -674,13 +732,19 @@ const StrategySession = () => {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    validate(name, value);
+    if (touched[name as keyof typeof touched]) validate(name, value);
+  };
+
+  const handleBlur = (name: string) => {
+    setTouched(prev => ({ ...prev, [name]: true }));
+    validate(name, formData[name as keyof typeof formData]);
   };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const isNameValid = validate('name', formData.name);
     const isEmailValid = validate('email', formData.email);
+    setTouched({ name: true, email: true });
     
     if (!isNameValid || !isEmailValid) return;
 
@@ -692,18 +756,21 @@ const StrategySession = () => {
         body: JSON.stringify({ ...formData, type: 'Strategy Session' }),
       });
 
-      const data = await response.json();
       if (response.ok) {
         setStatus('success');
         setFormData({ name: '', email: '' });
+        setTouched({ name: false, email: false });
       } else {
-        console.error('Submission error:', data);
         setStatus('error');
       }
     } catch (error) {
-      console.error('Fetch error:', error);
       setStatus('error');
     }
+  };
+
+  const inputVariants = {
+    error: { x: [0, -10, 10, -10, 10, 0], transition: { duration: 0.4 } },
+    idle: { x: 0 }
   };
 
   return (
@@ -759,69 +826,124 @@ const StrategySession = () => {
             <div className="absolute top-0 right-0 w-32 h-32 bg-gold/10 rounded-full -mr-16 -mt-16 blur-2xl"></div>
             
             <h3 className="text-2xl md:text-3xl font-serif mb-8 md:mb-12 text-center">Reserve Your Slot</h3>
-            {status === 'success' ? (
-              <div className="text-center py-10 space-y-8">
+            <AnimatePresence mode="wait">
+              {status === 'success' ? (
                 <motion.div 
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  className="w-20 md:w-24 h-20 md:h-24 bg-gold/20 rounded-full flex items-center justify-center text-gold mx-auto"
+                  key="success"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  className="text-center py-10 space-y-8"
                 >
-                  <Award size={48} />
+                  <motion.div 
+                    initial={{ scale: 0, rotate: -45 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={{ type: "spring", damping: 12 }}
+                    className="w-20 md:w-24 h-20 md:h-24 bg-gold/20 rounded-full flex items-center justify-center text-gold mx-auto"
+                  >
+                    <Award size={48} />
+                  </motion.div>
+                  <div className="space-y-4">
+                    <h4 className="text-3xl md:text-4xl font-serif">Request Received!</h4>
+                    <p className="text-white/40 font-light">Our team will reach out to you within 24 hours.</p>
+                  </div>
+                  <button onClick={() => setStatus('idle')} className="text-gold underline uppercase tracking-[0.3em] text-[10px] font-black hover:text-white transition-colors">Send another request</button>
                 </motion.div>
-                <div className="space-y-4">
-                  <h4 className="text-3xl md:text-4xl font-serif">Request Received!</h4>
-                  <p className="text-white/40 font-light">Our team will reach out to you within 24 hours.</p>
-                </div>
-                <button onClick={() => setStatus('idle')} className="text-gold underline uppercase tracking-[0.3em] text-[10px] font-black hover:text-white transition-colors">Send another request</button>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-6 md:space-y-8">
-                <div className="space-y-2">
-                  <label className="text-[10px] uppercase tracking-[0.3em] font-black text-white/30 ml-4">Full Name</label>
-                  <input 
-                    required
-                    name="name"
-                    type="text" 
-                    placeholder="e.g. Alexander Hamilton" 
-                    value={formData.name}
-                    onChange={handleChange}
-                    className={cn(
-                      "w-full bg-white/5 border px-6 md:px-8 py-4 md:py-5 rounded-2xl md:rounded-3xl focus:outline-none transition-all text-white placeholder:text-white/10 text-sm font-light",
-                      errors.name ? "border-red-500/50" : "border-white/10 focus:border-gold"
-                    )} 
-                  />
-                  {errors.name && <p className="text-[10px] text-red-400 uppercase tracking-widest ml-4">{errors.name}</p>}
-                </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] uppercase tracking-[0.3em] font-black text-white/30 ml-4">Email Address</label>
-                  <input 
-                    required
-                    name="email"
-                    type="email" 
-                    placeholder="e.g. alex@dynasty.com" 
-                    value={formData.email}
-                    onChange={handleChange}
-                    className={cn(
-                      "w-full bg-white/5 border px-6 md:px-8 py-4 md:py-5 rounded-2xl md:rounded-3xl focus:outline-none transition-all text-white placeholder:text-white/10 text-sm font-light",
-                      errors.email ? "border-red-500/50" : "border-white/10 focus:border-gold"
-                    )} 
-                  />
-                  {errors.email && <p className="text-[10px] text-red-400 uppercase tracking-widest ml-4">{errors.email}</p>}
-                </div>
-                <motion.button 
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  disabled={status === 'loading'}
-                  className="w-full bg-gold text-deep-blue py-5 md:py-6 rounded-2xl md:rounded-3xl font-black uppercase tracking-[0.3em] text-[10px] md:text-[11px] hover:bg-white transition-all duration-500 shadow-2xl shadow-gold/20 disabled:opacity-50"
+              ) : (
+                <motion.form 
+                  key="form"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onSubmit={handleSubmit} 
+                  className="space-y-6 md:space-y-8"
                 >
-                  {status === 'loading' ? 'Processing...' : 'Apply for Session'}
-                </motion.button>
-                {status === 'error' && <p className="text-red-400 text-[10px] text-center uppercase tracking-widest">Something went wrong. Please try again.</p>}
-                <p className="text-[9px] text-center text-white/20 uppercase tracking-[0.5em] mt-6 md:mt-8 font-black">
-                  Strictly limited to 5 sessions per month.
-                </p>
-              </form>
-            )}
+                  <div className="space-y-2">
+                    <label className="text-[10px] uppercase tracking-[0.3em] font-black text-white/30 ml-4">Full Name</label>
+                    <motion.input 
+                      required
+                      name="name"
+                      type="text" 
+                      placeholder="e.g. Alexander Hamilton" 
+                      value={formData.name}
+                      onChange={handleChange}
+                      onBlur={() => handleBlur('name')}
+                      animate={touched.name && errors.name ? "error" : "idle"}
+                      variants={inputVariants}
+                      className={cn(
+                        "w-full bg-white/5 border px-6 md:px-8 py-4 md:py-5 rounded-2xl md:rounded-3xl focus:outline-none transition-all text-white placeholder:text-white/10 text-sm font-light",
+                        touched.name && errors.name ? "border-red-500/50 shadow-[0_0_15px_rgba(239,68,68,0.1)]" : "border-white/10 focus:border-gold"
+                      )} 
+                    />
+                    <AnimatePresence>
+                      {touched.name && errors.name && (
+                        <motion.p 
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          className="text-[10px] text-red-400 uppercase tracking-widest ml-4"
+                        >
+                          {errors.name}
+                        </motion.p>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] uppercase tracking-[0.3em] font-black text-white/30 ml-4">Email Address</label>
+                    <motion.input 
+                      required
+                      name="email"
+                      type="email" 
+                      placeholder="e.g. alex@dynasty.com" 
+                      value={formData.email}
+                      onChange={handleChange}
+                      onBlur={() => handleBlur('email')}
+                      animate={touched.email && errors.email ? "error" : "idle"}
+                      variants={inputVariants}
+                      className={cn(
+                        "w-full bg-white/5 border px-6 md:px-8 py-4 md:py-5 rounded-2xl md:rounded-3xl focus:outline-none transition-all text-white placeholder:text-white/10 text-sm font-light",
+                        touched.email && errors.email ? "border-red-500/50 shadow-[0_0_15px_rgba(239,68,68,0.1)]" : "border-white/10 focus:border-gold"
+                      )} 
+                    />
+                    <AnimatePresence>
+                      {touched.email && errors.email && (
+                        <motion.p 
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          className="text-[10px] text-red-400 uppercase tracking-widest ml-4"
+                        >
+                          {errors.email}
+                        </motion.p>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                  <motion.button 
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    disabled={status === 'loading'}
+                    className="w-full bg-gold text-deep-blue py-5 md:py-6 rounded-2xl md:rounded-3xl font-black uppercase tracking-[0.3em] text-[10px] md:text-[11px] hover:bg-white transition-all duration-500 shadow-2xl shadow-gold/20 disabled:opacity-50"
+                  >
+                    {status === 'loading' ? 'Processing...' : 'Apply for Session'}
+                  </motion.button>
+                  <AnimatePresence>
+                    {status === 'error' && (
+                      <motion.p 
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 10 }}
+                        className="text-red-400 text-[10px] text-center uppercase tracking-widest"
+                      >
+                        Something went wrong. Please try again.
+                      </motion.p>
+                    )}
+                  </AnimatePresence>
+                  <p className="text-[9px] text-center text-white/20 uppercase tracking-[0.5em] mt-6 md:mt-8 font-black">
+                    Strictly limited to 5 sessions per month.
+                  </p>
+                </motion.form>
+              )}
+            </AnimatePresence>
           </motion.div>
         </div>
       </div>
@@ -831,8 +953,9 @@ const StrategySession = () => {
 
 const Contact = () => {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const [formData, setFormData] = useState({ name: '', email: '', service: 'Business Consulting' });
-  const [errors, setErrors] = useState({ name: '', email: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', service: '' });
+  const [errors, setErrors] = useState({ name: '', email: '', service: '' });
+  const [touched, setTouched] = useState({ name: false, email: false, service: false });
 
   const validate = (name: string, value: string) => {
     let error = '';
@@ -841,6 +964,8 @@ const Contact = () => {
     } else if (name === 'email') {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(value)) error = 'Please enter a valid email address';
+    } else if (name === 'service') {
+      if (!value) error = 'Please select a service';
     }
     setErrors(prev => ({ ...prev, [name]: error }));
     return error === '';
@@ -849,15 +974,22 @@ const Contact = () => {
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    if (name !== 'service') validate(name, value);
+    if (touched[name as keyof typeof touched]) validate(name, value);
+  };
+
+  const handleBlur = (name: string) => {
+    setTouched(prev => ({ ...prev, [name]: true }));
+    validate(name, formData[name as keyof typeof formData]);
   };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const isNameValid = validate('name', formData.name);
     const isEmailValid = validate('email', formData.email);
+    const isServiceValid = validate('service', formData.service);
+    setTouched({ name: true, email: true, service: true });
     
-    if (!isNameValid || !isEmailValid) return;
+    if (!isNameValid || !isEmailValid || !isServiceValid) return;
 
     setStatus('loading');
     try {
@@ -867,24 +999,27 @@ const Contact = () => {
         body: JSON.stringify({ ...formData, type: 'Consultation' }),
       });
 
-      const data = await response.json();
       if (response.ok) {
         setStatus('success');
-        setFormData({ name: '', email: '', service: 'Business Consulting' });
+        setFormData({ name: '', email: '', service: '' });
+        setTouched({ name: false, email: false, service: false });
       } else {
-        console.error('Submission error:', data);
         setStatus('error');
       }
     } catch (error) {
-      console.error('Fetch error:', error);
       setStatus('error');
     }
   };
 
+  const inputVariants = {
+    error: { x: [0, -10, 10, -10, 10, 0], transition: { duration: 0.4 } },
+    idle: { x: 0 }
+  };
+
   return (
-    <section id="contact" className="py-20 md:py-32 bg-white">
+    <section id="contact" className="py-20 md:py-32 bg-paper">
       <div className="max-w-7xl mx-auto px-6 md:px-8">
-        <div className="bg-paper rounded-[40px] md:rounded-[60px] p-8 md:p-16 lg:p-24 relative overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,0.1)] border border-deep-blue/5">
+        <div className="bg-white rounded-[40px] md:rounded-[60px] p-8 md:p-16 lg:p-24 relative overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,0.05)] border border-deep-blue/5">
           <div className="absolute top-0 right-0 w-64 md:w-96 h-64 md:h-96 bg-gold/5 rounded-full -mr-32 md:-mr-48 -mt-32 md:-mt-48 blur-3xl"></div>
           
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 relative z-10">
@@ -937,77 +1072,162 @@ const Contact = () => {
               </div>
             </div>
 
-            <div className="bg-white p-8 md:p-12 rounded-[30px] md:rounded-[40px] shadow-2xl border border-deep-blue/5">
-              {status === 'success' ? (
-                <div className="text-center py-12 md:py-20 space-y-8">
-                  <div className="w-16 md:w-20 h-16 md:h-20 bg-green-50 rounded-full flex items-center justify-center text-green-500 mx-auto">
-                    <Zap size={40} />
-                  </div>
-                  <div className="space-y-4">
-                    <h3 className="text-2xl md:text-3xl font-serif text-deep-blue">Message Sent!</h3>
-                    <p className="text-ink/40 font-light text-sm">We'll respond to your inquiry within 24 hours.</p>
-                  </div>
-                  <button onClick={() => setStatus('idle')} className="text-gold underline uppercase tracking-[0.3em] text-[10px] font-black">Send another message</button>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-6 md:space-y-8">
-                  <div className="space-y-2">
-                    <label className="text-[10px] uppercase tracking-[0.3em] font-black text-ink/20 ml-4">Your Name</label>
-                    <input 
-                      required
-                      name="name"
-                      type="text" 
-                      placeholder="e.g. Julianne Moore" 
-                      value={formData.name}
-                      onChange={handleChange}
-                      className={cn(
-                        "w-full bg-paper/50 border px-6 md:px-8 py-4 md:py-5 rounded-2xl md:rounded-3xl focus:outline-none transition-all text-deep-blue placeholder:text-ink/10 text-sm font-light",
-                        errors.name ? "border-red-500/50" : "border-deep-blue/5 focus:border-gold"
-                      )} 
-                    />
-                    {errors.name && <p className="text-[10px] text-red-400 uppercase tracking-widest ml-4">{errors.name}</p>}
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-[10px] uppercase tracking-[0.3em] font-black text-ink/20 ml-4">Email Address</label>
-                    <input 
-                      required
-                      name="email"
-                      type="email" 
-                      placeholder="e.g. julianne@prestige.com" 
-                      value={formData.email}
-                      onChange={handleChange}
-                      className={cn(
-                        "w-full bg-paper/50 border px-6 md:px-8 py-4 md:py-5 rounded-2xl md:rounded-3xl focus:outline-none transition-all text-deep-blue placeholder:text-ink/10 text-sm font-light",
-                        errors.email ? "border-red-500/50" : "border-deep-blue/5 focus:border-gold"
-                      )} 
-                    />
-                    {errors.email && <p className="text-[10px] text-red-400 uppercase tracking-widest ml-4">{errors.email}</p>}
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-[10px] uppercase tracking-[0.3em] font-black text-ink/20 ml-4">Service Interest</label>
-                    <select 
-                      name="service"
-                      value={formData.service}
-                      onChange={handleChange}
-                      className="w-full bg-paper/50 border border-deep-blue/5 px-6 md:px-8 py-4 md:py-5 rounded-2xl md:rounded-3xl focus:outline-none focus:border-gold transition-all text-deep-blue text-sm font-light appearance-none"
-                    >
-                      <option>Business Strategy</option>
-                      <option>Political Consulting</option>
-                      <option>Authority Building</option>
-                      <option>Digital Influence</option>
-                    </select>
-                  </div>
-                  <motion.button 
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    disabled={status === 'loading'}
-                    className="w-full bg-deep-blue text-white py-5 md:py-6 rounded-2xl md:rounded-3xl font-black uppercase tracking-[0.3em] text-[10px] md:text-[11px] hover:bg-gold hover:text-deep-blue transition-all duration-500 shadow-2xl shadow-deep-blue/20 disabled:opacity-50"
+            <div className="bg-paper/50 p-8 md:p-12 rounded-[30px] md:rounded-[40px] shadow-xl border border-deep-blue/5">
+              <AnimatePresence mode="wait">
+                {status === 'success' ? (
+                  <motion.div 
+                    key="success"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    className="text-center py-12 md:py-20 space-y-8"
                   >
-                    {status === 'loading' ? 'Sending...' : 'Send Inquiry'}
-                  </motion.button>
-                  {status === 'error' && <p className="text-red-400 text-[10px] text-center uppercase tracking-widest">Something went wrong. Please try again.</p>}
-                </form>
-              )}
+                    <motion.div 
+                      initial={{ scale: 0, rotate: 45 }}
+                      animate={{ scale: 1, rotate: 0 }}
+                      transition={{ type: "spring", damping: 12 }}
+                      className="w-16 md:w-20 h-16 md:h-20 bg-green-50 rounded-full flex items-center justify-center text-green-500 mx-auto"
+                    >
+                      <Zap size={40} />
+                    </motion.div>
+                    <div className="space-y-4">
+                      <h3 className="text-2xl md:text-3xl font-serif text-deep-blue">Message Sent!</h3>
+                      <p className="text-ink/40 font-light text-sm">We'll respond to your inquiry within 24 hours.</p>
+                    </div>
+                    <button onClick={() => setStatus('idle')} className="text-gold underline uppercase tracking-[0.3em] text-[10px] font-black hover:text-deep-blue transition-colors">Send another message</button>
+                  </motion.div>
+                ) : (
+                  <motion.form 
+                    key="form"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    onSubmit={handleSubmit} 
+                    className="space-y-6 md:space-y-8"
+                  >
+                    <div className="space-y-2">
+                      <label className="text-[10px] uppercase tracking-[0.3em] font-black text-ink/40 ml-4">Your Name</label>
+                      <motion.input 
+                        required
+                        name="name"
+                        type="text" 
+                        placeholder="e.g. Julianne Moore" 
+                        value={formData.name}
+                        onChange={handleChange}
+                        onBlur={() => handleBlur('name')}
+                        animate={touched.name && errors.name ? "error" : "idle"}
+                        variants={inputVariants}
+                        className={cn(
+                          "w-full bg-paper border px-6 md:px-8 py-4 md:py-5 rounded-2xl md:rounded-3xl focus:outline-none transition-all text-deep-blue placeholder:text-ink/20 text-sm font-light shadow-inner shadow-black/5",
+                          touched.name && errors.name ? "border-red-500/50 shadow-[0_0_15px_rgba(239,68,68,0.05)]" : "border-deep-blue/10 focus:border-gold focus:ring-1 focus:ring-gold/20"
+                        )} 
+                      />
+                      <AnimatePresence>
+                        {touched.name && errors.name && (
+                          <motion.p 
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            className="text-[10px] text-red-400 uppercase tracking-widest ml-4"
+                          >
+                            {errors.name}
+                          </motion.p>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[10px] uppercase tracking-[0.3em] font-black text-ink/40 ml-4">Email Address</label>
+                      <motion.input 
+                        required
+                        name="email"
+                        type="email" 
+                        placeholder="e.g. julianne@prestige.com" 
+                        value={formData.email}
+                        onChange={handleChange}
+                        onBlur={() => handleBlur('email')}
+                        animate={touched.email && errors.email ? "error" : "idle"}
+                        variants={inputVariants}
+                        className={cn(
+                          "w-full bg-paper border px-6 md:px-8 py-4 md:py-5 rounded-2xl md:rounded-3xl focus:outline-none transition-all text-deep-blue placeholder:text-ink/20 text-sm font-light shadow-inner shadow-black/5",
+                          touched.email && errors.email ? "border-red-500/50 shadow-[0_0_15px_rgba(239,68,68,0.05)]" : "border-deep-blue/10 focus:border-gold focus:ring-1 focus:ring-gold/20"
+                        )} 
+                      />
+                      <AnimatePresence>
+                        {touched.email && errors.email && (
+                          <motion.p 
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            className="text-[10px] text-red-400 uppercase tracking-widest ml-4"
+                          >
+                            {errors.email}
+                          </motion.p>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[10px] uppercase tracking-[0.3em] font-black text-ink/40 ml-4">Service Interest</label>
+                      <motion.div
+                        animate={touched.service && errors.service ? "error" : "idle"}
+                        variants={inputVariants}
+                        className="relative"
+                      >
+                        <select 
+                          name="service"
+                          value={formData.service}
+                          onChange={handleChange}
+                          onBlur={() => handleBlur('service')}
+                          className={cn(
+                            "w-full bg-paper border px-6 md:px-8 py-4 md:py-5 rounded-2xl md:rounded-3xl focus:outline-none transition-all text-deep-blue text-sm font-light appearance-none shadow-inner shadow-black/5",
+                            touched.service && errors.service ? "border-red-500/50 shadow-[0_0_15px_rgba(239,68,68,0.05)]" : "border-deep-blue/10 focus:border-gold focus:ring-1 focus:ring-gold/20"
+                          )}
+                        >
+                          <option value="" disabled>Select a service</option>
+                          <option>Business Strategy</option>
+                          <option>Political Consulting</option>
+                          <option>Authority Building</option>
+                          <option>Digital Influence</option>
+                        </select>
+                        <div className="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-deep-blue/20">
+                          <ChevronRight size={16} className="rotate-90" />
+                        </div>
+                      </motion.div>
+                      <AnimatePresence>
+                        {touched.service && errors.service && (
+                          <motion.p 
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            className="text-[10px] text-red-400 uppercase tracking-widest ml-4"
+                          >
+                            {errors.service}
+                          </motion.p>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                    <motion.button 
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      disabled={status === 'loading'}
+                      className="w-full bg-deep-blue text-white py-5 md:py-6 rounded-2xl md:rounded-3xl font-black uppercase tracking-[0.3em] text-[10px] md:text-[11px] hover:bg-gold hover:text-deep-blue transition-all duration-500 shadow-2xl shadow-deep-blue/20 disabled:opacity-50"
+                    >
+                      {status === 'loading' ? 'Sending...' : 'Send Inquiry'}
+                    </motion.button>
+                    <AnimatePresence>
+                      {status === 'error' && (
+                        <motion.p 
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 10 }}
+                          className="text-red-400 text-[10px] text-center uppercase tracking-widest"
+                        >
+                          Something went wrong. Please try again.
+                        </motion.p>
+                      )}
+                    </AnimatePresence>
+                  </motion.form>
+                )}
+              </AnimatePresence>
             </div>
           </div>
         </div>
@@ -1025,7 +1245,7 @@ const Footer = () => {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-12 md:gap-24 mb-16 md:mb-24">
           <div className="space-y-6 md:space-y-8 text-center sm:text-left">
             <div className="flex items-center justify-center sm:justify-start gap-4">
-              <div className="w-10 h-10 md:w-12 md:h-12 bg-white rounded-full flex items-center justify-center text-deep-blue font-serif text-xl md:text-2xl font-bold">
+              <div className="w-10 h-10 md:w-12 md:h-12 shrink-0 aspect-square bg-white rounded-full flex items-center justify-center text-deep-blue font-serif text-xl md:text-2xl font-bold">
                 U
               </div>
               <span className="text-xl md:text-2xl font-serif font-bold tracking-tight">
