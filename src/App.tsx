@@ -388,8 +388,8 @@ const Hero = () => {
               className="w-full h-full rounded-[30px] md:rounded-[40px] overflow-hidden shadow-[0_20px_40px_-10px_rgba(10,25,47,0.3)] lg:shadow-[0_50px_100px_-20px_rgba(10,25,47,0.3)] group"
             >
               <img 
-                src="https://picsum.photos/seed/mayur/1000/1250" 
-                alt="Mayur Salunke" 
+                src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=1000&h=1250" 
+                alt="Professional Consultant" 
                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                 referrerPolicy="no-referrer"
               />
