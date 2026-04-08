@@ -3,7 +3,6 @@ import {
   Briefcase, 
   Globe, 
   Shield, 
-  TrendingUp, 
   Users, 
   Zap, 
   ChevronRight, 
@@ -127,7 +126,7 @@ const FloatingCTA = () => {
       id: 'whatsapp',
       text: "WhatsApp", 
       icon: <MessageSquare className="w-4 h-4 md:w-6 md:h-6" />, 
-      href: "https://wa.me/#", 
+      href: "https://wa.me/918855992447", 
       color: "bg-green-500 text-white",
       shadow: "shadow-green-500/40"
     },
@@ -301,7 +300,7 @@ const Hero = () => {
   const scale = useTransform(smoothScroll, [0, 500], [1, isMobile ? 1.05 : 1.1]);
 
   return (
-    <section className="relative min-h-screen flex items-start lg:items-center justify-center pt-56 md:pt-72 lg:pt-40 xl:pt-0 overflow-hidden bg-paper">
+    <section className="relative min-h-screen flex items-center justify-center pt-24 md:pt-32 lg:pt-0 overflow-hidden bg-paper">
       {/* Background Elements */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-deep-blue/5 skew-x-[-15deg] translate-x-20"></div>
@@ -310,11 +309,12 @@ const Hero = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 md:px-8 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center relative z-10 w-full">
-        <div className="space-y-8 md:space-y-12 text-center lg:text-left">
+      <div className="max-w-7xl mx-auto px-6 md:px-8 flex flex-col items-center justify-center relative z-10 w-full">
+        <div className="space-y-10 md:space-y-12 text-center">
           <div className="space-y-4">
             <Reveal delay={0.2} y={20}>
-              <div className="flex items-center justify-center lg:justify-start gap-4">
+              <div className="flex items-center justify-center gap-4">
+                <div className="hidden sm:block h-[1px] w-12 md:w-24 bg-gold/30"></div>
                 <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-gold bg-gold/10 px-4 py-1 rounded-full">
                   Elite Consulting
                 </span>
@@ -328,8 +328,8 @@ const Hero = () => {
               duration={isMobile ? 0.6 : 0.8}
             >
               <h1 className="text-4xl sm:text-5xl md:text-5xl lg:text-7xl xl:text-[clamp(3rem,8vw,7rem)] font-serif leading-[1.1] md:leading-[1.1] text-deep-blue tracking-tighter">
-                Strategic <br />
-                <span className="italic font-light text-accent">Authority</span> <br />
+                Strategic <br className="lg:hidden" />
+                <span className="italic font-light text-accent">Authority</span> <br className="lg:hidden" />
                 <span className="relative">
                   Building
                   <motion.span 
@@ -344,14 +344,14 @@ const Hero = () => {
           </div>
 
           <Reveal delay={0.6} y={30}>
-            <p className="text-lg md:text-xl text-ink/60 max-w-lg mx-auto lg:mx-0 leading-relaxed font-light">
+            <p className="text-lg md:text-xl text-ink/60 max-w-2xl mx-auto leading-relaxed font-light">
               We don't just consult; we engineer <span className="text-deep-blue font-medium italic">influence</span>. 
               Partner with Mayur Salunke to dominate your market and lead with unshakeable authority.
             </p>
           </Reveal>
 
           <Reveal delay={0.8} y={20}>
-            <div className="flex flex-col sm:flex-row flex-wrap gap-6 md:gap-8 items-center justify-center lg:justify-start">
+            <div className="flex flex-col sm:flex-row flex-wrap gap-6 md:gap-8 items-center justify-center">
               <motion.a 
                 href="#contact"
                 whileHover={{ scale: 1.05 }}
@@ -375,76 +375,21 @@ const Hero = () => {
             </div>
           </Reveal>
         </div>
-
-        <div className="relative h-auto lg:h-[80vh] flex items-center justify-center mt-12 lg:mt-0 px-4 md:px-0">
-          <motion.div 
-            style={{ y: y1, rotate, scale }}
-            className="relative w-full max-w-[320px] sm:max-w-md lg:max-w-xl aspect-[4/5] z-10"
-          >
-            <div className="absolute -inset-2 md:-inset-4 border border-gold/20 rounded-[30px] md:rounded-[40px] -z-10 translate-x-0 md:translate-x-8 translate-y-0 md:translate-y-8"></div>
-            <div className="absolute -inset-2 md:-inset-4 border border-deep-blue/10 rounded-[30px] md:rounded-[40px] -z-10 translate-x-0 md:-translate-x-4 translate-y-0 md:-translate-y-4"></div>
-            
-            <motion.div 
-              className="w-full h-full rounded-[30px] md:rounded-[40px] overflow-hidden shadow-[0_20px_40px_-10px_rgba(10,25,47,0.3)] lg:shadow-[0_50px_100px_-20px_rgba(10,25,47,0.3)] group"
-            >
-              <img 
-                src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=1000&h=1250" 
-                alt="Professional Consultant" 
-                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                referrerPolicy="no-referrer"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-deep-blue via-transparent to-transparent opacity-60"></div>
-              
-              <div className="absolute bottom-6 md:bottom-12 left-6 md:left-12 right-6 md:left-12">
-                <span className="text-[8px] md:text-[10px] uppercase tracking-[0.5em] text-gold font-bold mb-2 block">Founder</span>
-                <h2 className="text-2xl md:text-4xl text-white font-serif mb-2">Mayur Salunke</h2>
-                <div className="h-[1px] w-8 md:w-12 bg-gold/50 mb-4"></div>
-                <p className="text-white/60 text-[10px] md:text-xs uppercase tracking-widest leading-relaxed">
-                  Strategic Architect for <br /> Business & Political Dynasties
-                </p>
-              </div>
-            </motion.div>
-          </motion.div>
-
-          {/* Floating Elements */}
-          <motion.div 
-            animate={{ y: [0, -20, 0] }}
-            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute top-[10%] -right-10 bg-white/80 backdrop-blur-xl p-6 rounded-3xl shadow-2xl z-20 border border-gold/20 hidden xl:block"
-          >
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-gold/10 rounded-2xl flex items-center justify-center text-gold">
-                <Award size={24} />
-              </div>
-              <div>
-                <div className="text-2xl font-bold text-deep-blue">#1</div>
-                <div className="text-[8px] uppercase tracking-widest font-black opacity-40">Authority Expert</div>
-              </div>
-            </div>
-          </motion.div>
-
-          <motion.div 
-            animate={{ y: [0, 20, 0] }}
-            transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-            className="absolute bottom-[35%] -left-16 bg-deep-blue p-5 rounded-3xl shadow-2xl z-20 border border-white/10 hidden xl:block"
-          >
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center text-gold">
-                <TrendingUp size={24} />
-              </div>
-              <div>
-                <div className="text-2xl font-bold text-white">10X</div>
-                <div className="text-[8px] uppercase tracking-widest font-black opacity-40 text-white/60">Growth Multiplier</div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
       </div>
     </section>
   );
 };
 
 const Services = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   const services = [
     {
       icon: <Briefcase className="w-8 h-8" />,
@@ -498,7 +443,7 @@ const Services = () => {
           </Reveal>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-1">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {services.map((s, i) => (
             <motion.div
               key={i}
@@ -506,17 +451,23 @@ const Services = () => {
               whileInView={{ 
                 opacity: 1, 
                 y: 0,
-                backgroundColor: ["rgba(255,255,255,1)", "rgba(10,25,47,1)", "rgba(255,255,255,1)"] 
+                backgroundColor: isMobile 
+                  ? ["rgba(255,255,255,1)", "rgba(10,25,47,1)", "rgba(10,25,47,1)", "rgba(255,255,255,1)"] 
+                  : ["rgba(255,255,255,1)", "rgba(10,25,47,1)", "rgba(255,255,255,1)"] 
               }}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              viewport={{ once: true, margin: "-100px" }}
+              viewport={{ once: true, margin: isMobile ? "-20%" : "-100px" }}
               transition={{ 
                 delay: i * 0.15,
-                backgroundColor: { duration: 1.5, times: [0, 0.5, 1], delay: i * 0.2 + 0.5 }
+                backgroundColor: { 
+                  duration: isMobile ? 2.5 : 1.5, 
+                  times: isMobile ? [0, 0.2, 0.8, 1] : [0, 0.5, 1], 
+                  delay: i * 0.2 + 0.5 
+                }
               }}
               className={cn(
-                "p-8 md:p-12 min-h-[400px] md:min-h-[500px] flex flex-col justify-between transition-all duration-500 group relative overflow-hidden rounded-3xl md:rounded-none border border-deep-blue/5 cursor-pointer",
+                "p-8 md:p-12 min-h-[400px] md:min-h-[500px] flex flex-col justify-between transition-all duration-500 group relative overflow-hidden rounded-[40px] border border-deep-blue/5 cursor-pointer shadow-2xl shadow-deep-blue/5",
                 s.color
               )}
             >
@@ -526,10 +477,16 @@ const Services = () => {
               {/* Content Container */}
               <motion.div 
                 whileInView={{
-                  color: ["rgba(10,25,47,1)", "rgba(255,255,255,1)", "rgba(10,25,47,1)"]
+                  color: isMobile 
+                    ? ["rgba(10,25,47,1)", "rgba(255,255,255,1)", "rgba(255,255,255,1)", "rgba(10,25,47,1)"] 
+                    : ["rgba(10,25,47,1)", "rgba(255,255,255,1)", "rgba(10,25,47,1)"]
                 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 1.5, times: [0, 0.5, 1], delay: i * 0.2 + 0.5 }}
+                viewport={{ once: true, margin: isMobile ? "-20%" : "-100px" }}
+                transition={{ 
+                  duration: isMobile ? 2.5 : 1.5, 
+                  times: isMobile ? [0, 0.2, 0.8, 1] : [0, 0.5, 1], 
+                  delay: i * 0.2 + 0.5 
+                }}
                 className="relative z-10 pointer-events-none transition-transform duration-500 group-hover:-translate-y-2 group-active:-translate-y-2"
               >
                 <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-deep-blue mb-12 group-hover:bg-gold group-active:bg-gold transition-all duration-500 shadow-xl shadow-deep-blue/5">
@@ -665,7 +622,7 @@ const About = () => {
 const Impact = () => {
   const stats = [
     { label: "Political Campaigns", value: "50+" },
-    { label: "Business Clients", value: "200+" },
+    { label: "Business Clients", value: "100+" },
     { label: "Digital Reach", value: "10M+" },
     { label: "Success Rate", value: "98%" }
   ];
@@ -690,7 +647,7 @@ const Impact = () => {
             </Reveal>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {stats.map((s, i) => (
               <motion.div
                 key={i}
@@ -698,253 +655,13 @@ const Impact = () => {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="bg-white/5 backdrop-blur-sm p-10 md:p-16 flex flex-col items-center justify-center border border-white/5 group hover:bg-white/10 transition-all duration-700"
+                className="bg-white/5 backdrop-blur-sm p-10 md:p-16 flex flex-col items-center justify-center border border-white/5 group hover:bg-white/10 transition-all duration-700 rounded-[30px] shadow-2xl shadow-black/20"
               >
                 <div className="text-5xl md:text-7xl font-serif text-gold mb-4 group-hover:scale-110 transition-transform duration-700">{s.value}</div>
                 <div className="text-[9px] md:text-[10px] uppercase tracking-[0.4em] font-black opacity-40 text-center">{s.label}</div>
               </motion.div>
             ))}
           </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const StrategySession = () => {
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const [formData, setFormData] = useState({ name: '', email: '' });
-  const [errors, setErrors] = useState({ name: '', email: '' });
-  const [touched, setTouched] = useState({ name: false, email: false });
-
-  const validate = (name: string, value: string) => {
-    let error = '';
-    if (name === 'name') {
-      if (value.length < 2) error = 'Name must be at least 2 characters';
-    } else if (name === 'email') {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(value)) error = 'Please enter a valid email address';
-    }
-    setErrors(prev => ({ ...prev, [name]: error }));
-    return error === '';
-  };
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-    if (touched[name as keyof typeof touched]) validate(name, value);
-  };
-
-  const handleBlur = (name: string) => {
-    setTouched(prev => ({ ...prev, [name]: true }));
-    validate(name, formData[name as keyof typeof formData]);
-  };
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    const isNameValid = validate('name', formData.name);
-    const isEmailValid = validate('email', formData.email);
-    setTouched({ name: true, email: true });
-    
-    if (!isNameValid || !isEmailValid) return;
-
-    setStatus('loading');
-    try {
-      const response = await fetch(`${window.location.origin}/api/contact`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData, type: 'Strategy Session' }),
-      });
-
-      if (response.ok) {
-        setStatus('success');
-        setFormData({ name: '', email: '' });
-        setTouched({ name: false, email: false });
-      } else {
-        setStatus('error');
-      }
-    } catch (error) {
-      setStatus('error');
-    }
-  };
-
-  const inputVariants = {
-    error: { x: [0, -10, 10, -10, 10, 0], transition: { duration: 0.4 } },
-    idle: { x: 0 }
-  };
-
-  return (
-    <section className="py-24 md:py-40 bg-deep-blue text-white overflow-hidden relative">
-      <div className="absolute top-0 left-0 w-full h-full opacity-[0.03] pointer-events-none">
-        <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
-      </div>
-      
-      <div className="max-w-7xl mx-auto px-6 md:px-8 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-32 items-center">
-          <div className="space-y-8 md:space-y-12 text-center lg:text-left">
-            <Reveal>
-              <span className="text-[11px] font-bold uppercase tracking-[0.5em] text-gold mb-6 block">Limited Opportunity</span>
-              <h2 className="text-5xl md:text-7xl font-serif leading-[1] md:leading-[0.9] tracking-tighter">
-                Claim Your Free <br /> 
-                <span className="text-gold italic font-light">Authority Strategy</span> <br />
-                Session.
-              </h2>
-              <p className="text-lg md:text-xl text-white/40 mt-8 leading-relaxed max-w-lg mx-auto lg:mx-0 font-light">
-                In this 30-minute deep dive, we'll analyze your current market position and identify the top 3 levers for your strategic growth.
-              </p>
-            </Reveal>
-            
-            <div className="grid gap-4 md:gap-6 max-w-md mx-auto lg:mx-0">
-              {[
-                "Personalized Growth Roadmap",
-                "Digital Influence Audit",
-                "Authority Positioning Framework"
-              ].map((item, i) => (
-                <motion.div 
-                  key={i}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.5 + i * 0.1 }}
-                  className="flex items-center gap-4 md:gap-6 group"
-                >
-                  <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl md:rounded-2xl bg-gold/10 flex items-center justify-center text-gold group-hover:bg-gold group-hover:text-deep-blue transition-all duration-500">
-                    <ChevronRight size={18} />
-                  </div>
-                  <span className="text-[9px] md:text-[11px] font-black uppercase tracking-[0.3em] opacity-60 text-left">{item}</span>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-
-          <motion.div 
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="bg-white/5 backdrop-blur-2xl p-8 md:p-16 rounded-[40px] md:rounded-[60px] border border-white/10 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] relative overflow-hidden"
-          >
-            <div className="absolute top-0 right-0 w-32 h-32 bg-gold/10 rounded-full -mr-16 -mt-16 blur-2xl"></div>
-            
-            <h3 className="text-2xl md:text-3xl font-serif mb-8 md:mb-12 text-center">Reserve Your Slot</h3>
-            <AnimatePresence mode="wait">
-              {status === 'success' ? (
-                <motion.div 
-                  key="success"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  className="text-center py-10 space-y-8"
-                >
-                  <motion.div 
-                    initial={{ scale: 0, rotate: -45 }}
-                    animate={{ scale: 1, rotate: 0 }}
-                    transition={{ type: "spring", damping: 12 }}
-                    className="w-20 md:w-24 h-20 md:h-24 bg-gold/20 rounded-full flex items-center justify-center text-gold mx-auto"
-                  >
-                    <Award size={48} />
-                  </motion.div>
-                  <div className="space-y-4">
-                    <h4 className="text-3xl md:text-4xl font-serif">Request Received!</h4>
-                    <p className="text-white/40 font-light">Our team will reach out to you within 24 hours.</p>
-                  </div>
-                  <button onClick={() => setStatus('idle')} className="text-gold underline uppercase tracking-[0.3em] text-[10px] font-black hover:text-white transition-colors">Send another request</button>
-                </motion.div>
-              ) : (
-                <motion.form 
-                  key="form"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  onSubmit={handleSubmit} 
-                  className="space-y-6 md:space-y-8"
-                >
-                  <div className="space-y-2">
-                    <label className="text-[10px] uppercase tracking-[0.3em] font-black text-white/30 ml-4">Full Name</label>
-                    <motion.input 
-                      required
-                      name="name"
-                      type="text" 
-                      placeholder="e.g. Alexander Hamilton" 
-                      value={formData.name}
-                      onChange={handleChange}
-                      onBlur={() => handleBlur('name')}
-                      animate={touched.name && errors.name ? "error" : "idle"}
-                      variants={inputVariants}
-                      className={cn(
-                        "w-full bg-white/5 border px-6 md:px-8 py-4 md:py-5 rounded-2xl md:rounded-3xl focus:outline-none transition-all text-white placeholder:text-white/10 text-sm font-light",
-                        touched.name && errors.name ? "border-red-500/50 shadow-[0_0_15px_rgba(239,68,68,0.1)]" : "border-white/10 focus:border-gold"
-                      )} 
-                    />
-                    <AnimatePresence>
-                      {touched.name && errors.name && (
-                        <motion.p 
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: 'auto' }}
-                          exit={{ opacity: 0, height: 0 }}
-                          className="text-[10px] text-red-400 uppercase tracking-widest ml-4"
-                        >
-                          {errors.name}
-                        </motion.p>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-[10px] uppercase tracking-[0.3em] font-black text-white/30 ml-4">Email Address</label>
-                    <motion.input 
-                      required
-                      name="email"
-                      type="email" 
-                      placeholder="e.g. alex@dynasty.com" 
-                      value={formData.email}
-                      onChange={handleChange}
-                      onBlur={() => handleBlur('email')}
-                      animate={touched.email && errors.email ? "error" : "idle"}
-                      variants={inputVariants}
-                      className={cn(
-                        "w-full bg-white/5 border px-6 md:px-8 py-4 md:py-5 rounded-2xl md:rounded-3xl focus:outline-none transition-all text-white placeholder:text-white/10 text-sm font-light",
-                        touched.email && errors.email ? "border-red-500/50 shadow-[0_0_15px_rgba(239,68,68,0.1)]" : "border-white/10 focus:border-gold"
-                      )} 
-                    />
-                    <AnimatePresence>
-                      {touched.email && errors.email && (
-                        <motion.p 
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: 'auto' }}
-                          exit={{ opacity: 0, height: 0 }}
-                          className="text-[10px] text-red-400 uppercase tracking-widest ml-4"
-                        >
-                          {errors.email}
-                        </motion.p>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                  <motion.button 
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    disabled={status === 'loading'}
-                    className="w-full bg-gold text-deep-blue py-5 md:py-6 rounded-2xl md:rounded-3xl font-black uppercase tracking-[0.3em] text-[10px] md:text-[11px] hover:bg-white transition-all duration-500 shadow-2xl shadow-gold/20 disabled:opacity-50"
-                  >
-                    {status === 'loading' ? 'Processing...' : 'Apply for Session'}
-                  </motion.button>
-                  <AnimatePresence>
-                    {status === 'error' && (
-                      <motion.p 
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 10 }}
-                        className="text-red-400 text-[10px] text-center uppercase tracking-widest"
-                      >
-                        Something went wrong. Please try again.
-                      </motion.p>
-                    )}
-                  </AnimatePresence>
-                  <p className="text-[9px] text-center text-white/20 uppercase tracking-[0.5em] mt-6 md:mt-8 font-black">
-                    Strictly limited to 5 sessions per month.
-                  </p>
-                </motion.form>
-              )}
-            </AnimatePresence>
-          </motion.div>
         </div>
       </div>
     </section>
@@ -1017,16 +734,16 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="py-20 md:py-32 bg-paper">
-      <div className="max-w-7xl mx-auto px-6 md:px-8">
-        <div className="bg-white rounded-[40px] md:rounded-[60px] p-8 md:p-16 lg:p-24 relative overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,0.05)] border border-deep-blue/5">
+    <section id="contact" className="py-16 md:py-32 bg-paper">
+      <div className="max-w-7xl mx-auto px-4 md:px-8">
+        <div className="bg-white rounded-[30px] md:rounded-[60px] p-6 md:p-16 lg:p-24 relative overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,0.05)] border border-deep-blue/5">
           <div className="absolute top-0 right-0 w-64 md:w-96 h-64 md:h-96 bg-gold/5 rounded-full -mr-32 md:-mr-48 -mt-32 md:-mt-48 blur-3xl"></div>
           
-          <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-12 md:gap-24 relative z-10">
             <div className="space-y-8 md:space-y-12 text-center lg:text-left">
               <div className="space-y-4 md:space-y-6">
                 <span className="text-[11px] font-bold uppercase tracking-[0.5em] text-gold block">Get in Touch</span>
-                <h2 className="text-5xl md:text-7xl font-serif text-deep-blue leading-[1] md:leading-[0.9] tracking-tighter">
+                <h2 className="text-4xl sm:text-5xl md:text-7xl font-serif text-deep-blue leading-[1] md:leading-[0.9] tracking-tighter">
                   Let's Build Your <br />
                   <span className="italic font-light text-accent">Legacy Together.</span>
                 </h2>
@@ -1034,21 +751,27 @@ const Contact = () => {
 
               <div className="space-y-6 md:space-y-8 max-w-md mx-auto lg:mx-0">
                 <div className="flex items-center gap-6 md:gap-8 group">
-                  <div className="w-12 h-12 md:w-16 md:h-16 bg-white rounded-2xl md:rounded-3xl flex items-center justify-center text-gold shadow-xl shadow-deep-blue/5 group-hover:bg-deep-blue group-hover:text-white transition-all duration-500 shrink-0">
+                  <a href="tel:8855992447" className="w-12 h-12 md:w-16 md:h-16 bg-white rounded-2xl md:rounded-3xl flex items-center justify-center text-gold shadow-xl shadow-deep-blue/5 group-hover:bg-deep-blue group-hover:text-white transition-all duration-500 shrink-0">
                     <Phone size={24} />
-                  </div>
-                  <div className="text-left">
-                    <div className="text-[10px] uppercase tracking-[0.3em] font-black opacity-30 mb-1">Direct Line</div>
-                    <div className="text-lg md:text-xl font-serif text-deep-blue">+91 98765 43210</div>
+                  </a>
+                  <div className="text-left space-y-3">
+                    <div>
+                      <div className="text-[10px] uppercase tracking-[0.3em] font-black opacity-30 mb-1">Direct Line 1</div>
+                      <a href="tel:8855992447" className="text-lg md:text-xl font-serif text-deep-blue hover:text-gold transition-colors">8855992447</a>
+                    </div>
+                    <div>
+                      <div className="text-[10px] uppercase tracking-[0.3em] font-black opacity-30 mb-1">Direct Line 2</div>
+                      <a href="tel:8983451280" className="text-lg md:text-xl font-serif text-deep-blue hover:text-gold transition-colors">8983451280</a>
+                    </div>
                   </div>
                 </div>
                 <div className="flex items-center gap-6 md:gap-8 group">
-                  <div className="w-12 h-12 md:w-16 md:h-16 bg-white rounded-2xl md:rounded-3xl flex items-center justify-center text-gold shadow-xl shadow-deep-blue/5 group-hover:bg-deep-blue group-hover:text-white transition-all duration-500 shrink-0">
+                  <a href="mailto:urjabusinessconsult@gmail.com" className="w-12 h-12 md:w-16 md:h-16 bg-white rounded-2xl md:rounded-3xl flex items-center justify-center text-gold shadow-xl shadow-deep-blue/5 group-hover:bg-deep-blue group-hover:text-white transition-all duration-500 shrink-0">
                     <Mail size={24} />
-                  </div>
+                  </a>
                   <div className="text-left">
                     <div className="text-[10px] uppercase tracking-[0.3em] font-black opacity-30 mb-1">Email Inquiry</div>
-                    <div className="text-lg md:text-xl font-serif text-deep-blue">hello@urjaconsultancy.com</div>
+                    <a href="mailto:urjabusinessconsult@gmail.com" className="text-lg md:text-xl font-serif text-deep-blue hover:text-gold transition-colors">urjabusinessconsult@gmail.com</a>
                   </div>
                 </div>
               </div>
@@ -1242,7 +965,7 @@ const Footer = () => {
       <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gold/5 -skew-y-6 translate-y-20 pointer-events-none"></div>
       
       <div className="max-w-7xl mx-auto px-6 md:px-8 relative z-10">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-12 md:gap-24 mb-16 md:mb-24">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-12 md:gap-24 mb-16 md:mb-24">
           <div className="space-y-6 md:space-y-8 text-center sm:text-left">
             <div className="flex items-center justify-center sm:justify-start gap-4">
               <div className="w-10 h-10 md:w-12 md:h-12 shrink-0 aspect-square bg-white rounded-full flex items-center justify-center text-deep-blue font-serif text-xl md:text-2xl font-bold">
@@ -1277,21 +1000,6 @@ const Footer = () => {
                 </li>
               ))}
             </ul>
-          </div>
-
-          <div className="text-center sm:text-left">
-            <h4 className="text-[10px] uppercase tracking-[0.5em] font-black text-gold mb-6 md:mb-10">Newsletter</h4>
-            <p className="text-white/40 text-xs mb-6 font-light">Join 5,000+ leaders receiving our weekly strategic insights.</p>
-            <div className="flex gap-2 max-w-xs mx-auto sm:mx-0">
-              <input 
-                type="email" 
-                placeholder="Email" 
-                className="bg-white/5 border border-white/10 px-4 md:px-6 py-3 rounded-xl md:rounded-2xl focus:outline-none focus:border-gold transition-all text-sm w-full font-light"
-              />
-              <button className="bg-gold text-deep-blue p-3 rounded-xl md:rounded-2xl hover:bg-white transition-colors">
-                <ArrowRight size={20} />
-              </button>
-            </div>
           </div>
         </div>
 
@@ -1341,7 +1049,6 @@ export default function App() {
       <Services />
       <About />
       <Impact />
-      <StrategySession />
       <Contact />
       <Footer />
       <FloatingCTA />
