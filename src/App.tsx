@@ -125,8 +125,7 @@ const FloatingCTA = () => {
 
   const buttons = [
     { 
-      id: 'whatsapp',
-      text: "WhatsApp", 
+      id: 'whatsapp', 
       icon: <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" className="w-6 h-6 md:w-8 md:h-8" referrerPolicy="no-referrer" />, 
       href: "https://wa.me/918855992447", 
       color: "bg-[#25D366] text-white",
@@ -472,7 +471,7 @@ const Services = () => {
               )}
             >
               {/* Animated Background Overlay */}
-              <div className="absolute inset-0 bg-deep-blue translate-y-full group-hover:translate-y-0 group-active:translate-y-0 transition-transform duration-500 ease-out z-0"></div>
+              <div className="absolute inset-0 bg-deep-blue translate-y-full group-hover:translate-y-0 group-active:translate-y-0 transition-transform duration-200 ease-out z-0"></div>
               
               {/* Content Container */}
               <motion.div 
@@ -485,19 +484,19 @@ const Services = () => {
                   delay: i * 0.15 + 0.3 
                 }}
                 style={{ willChange: "color, transform" }}
-                className="relative z-10 pointer-events-none group-hover:-translate-y-2 group-active:-translate-y-2 transition-transform duration-500"
+                className="relative z-10 pointer-events-none group-hover:-translate-y-2 group-active:-translate-y-2 transition-transform duration-200"
               >
                 <motion.div 
                   whileInView={{ backgroundColor: "rgba(212,175,55,1)", color: "rgba(10,25,47,1)" }}
                   transition={{ delay: i * 0.15 + 0.6, duration: 0.4 }}
-                  className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-deep-blue mb-12 group-hover:bg-gold group-active:bg-gold transition-all duration-500 shadow-xl shadow-deep-blue/5"
+                  className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-deep-blue mb-12 group-hover:bg-gold group-active:bg-gold transition-all duration-200 shadow-xl shadow-deep-blue/5"
                 >
                   {s.icon}
                 </motion.div>
-                <h3 className="text-3xl font-serif mb-6 text-current group-hover:text-white group-active:text-white transition-colors duration-500">
+                <h3 className="text-3xl font-serif mb-6 text-current group-hover:text-white group-active:text-white transition-colors duration-200">
                   {s.title}
                 </h3>
-                <p className="text-current opacity-60 text-sm leading-relaxed mb-8 group-hover:text-white/80 group-active:text-white/80 transition-colors duration-500">
+                <p className="text-current opacity-60 text-sm leading-relaxed mb-8 group-hover:text-white/80 group-active:text-white/80 transition-colors duration-200">
                   {s.desc}
                 </p>
               </motion.div>
@@ -517,7 +516,7 @@ const Services = () => {
                 </div>
                 <motion.div 
                   whileInView={{ opacity: 1 }}
-                  transition={{ delay: i * 0.15 + 1.0, duration: 0.4 }}
+                  transition={{ delay: i * 0.05 + 1.0, duration: 0.2 }}
                   className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-gold opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity duration-500"
                 >
                   Learn More <ArrowRight size={14} />
