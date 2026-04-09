@@ -125,10 +125,10 @@ const FloatingCTA = () => {
     { 
       id: 'whatsapp',
       text: "WhatsApp", 
-      icon: <MessageSquare className="w-4 h-4 md:w-6 md:h-6" />, 
+      icon: <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" className="w-6 h-6 md:w-8 md:h-8" referrerPolicy="no-referrer" />, 
       href: "https://wa.me/918855992447", 
-      color: "bg-green-500 text-white",
-      shadow: "shadow-green-500/40"
+      color: "bg-[#25D366] text-white",
+      shadow: "shadow-[#25D366]/40"
     },
     { 
       id: 'top',
@@ -164,16 +164,16 @@ const FloatingCTA = () => {
                 )}
               </AnimatePresence>
               
-              <motion.div
+              <motion.a
+                href={btn.href}
+                target={btn.href ? "_blank" : undefined}
+                rel={btn.href ? "noopener noreferrer" : undefined}
                 onMouseEnter={() => setActiveLabel(btn.id)}
                 onMouseLeave={() => setActiveLabel(null)}
-                onClick={() => {
-                  if (activeLabel === btn.id) {
-                    if (btn.onClick) btn.onClick();
-                    if (btn.href) window.open(btn.href, '_blank');
-                    setActiveLabel(null);
-                  } else {
-                    setActiveLabel(btn.id);
+                onClick={(e) => {
+                  if (btn.onClick) {
+                    e.preventDefault();
+                    btn.onClick();
                   }
                 }}
                 whileHover={{ scale: 1.1 }}
@@ -185,7 +185,7 @@ const FloatingCTA = () => {
                 )}
               >
                 {btn.icon}
-              </motion.div>
+              </motion.a>
             </div>
           ))}
         </motion.div>
@@ -327,7 +327,7 @@ const Hero = () => {
               y={isMobile ? 20 : 50} 
               duration={isMobile ? 0.6 : 0.8}
             >
-              <h1 className="text-4xl sm:text-5xl md:text-5xl lg:text-7xl xl:text-[clamp(3rem,8vw,7rem)] font-serif leading-[1.1] md:leading-[1.1] text-deep-blue tracking-tighter">
+              <h1 className="text-6xl sm:text-7xl md:text-5xl lg:text-7xl xl:text-[clamp(3rem,8vw,7rem)] font-serif leading-[1] md:leading-[1.1] text-deep-blue tracking-tighter">
                 Strategic <br className="lg:hidden" />
                 <span className="italic font-light text-accent">Authority</span> <br className="lg:hidden" />
                 <span className="relative">
@@ -451,18 +451,15 @@ const Services = () => {
               whileInView={{ 
                 opacity: 1, 
                 y: 0,
-                backgroundColor: isMobile 
-                  ? ["rgba(255,255,255,1)", "rgba(10,25,47,1)", "rgba(10,25,47,1)", "rgba(255,255,255,1)"] 
-                  : ["rgba(255,255,255,1)", "rgba(10,25,47,1)", "rgba(255,255,255,1)"] 
+                backgroundColor: "rgba(10,25,47,1)"
               }}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              viewport={{ once: true, margin: isMobile ? "-20%" : "-100px" }}
+              viewport={{ once: true, margin: "-10%" }}
               transition={{ 
                 delay: i * 0.15,
                 backgroundColor: { 
-                  duration: isMobile ? 2.5 : 1.5, 
-                  times: isMobile ? [0, 0.2, 0.8, 1] : [0, 0.5, 1], 
+                  duration: 1.2, 
                   delay: i * 0.2 + 0.5 
                 }
               }}
@@ -477,21 +474,22 @@ const Services = () => {
               {/* Content Container */}
               <motion.div 
                 whileInView={{
-                  color: isMobile 
-                    ? ["rgba(10,25,47,1)", "rgba(255,255,255,1)", "rgba(255,255,255,1)", "rgba(10,25,47,1)"] 
-                    : ["rgba(10,25,47,1)", "rgba(255,255,255,1)", "rgba(10,25,47,1)"]
+                  color: "rgba(255,255,255,1)"
                 }}
-                viewport={{ once: true, margin: isMobile ? "-20%" : "-100px" }}
+                viewport={{ once: true, margin: "-10%" }}
                 transition={{ 
-                  duration: isMobile ? 2.5 : 1.5, 
-                  times: isMobile ? [0, 0.2, 0.8, 1] : [0, 0.5, 1], 
+                  duration: 1.2, 
                   delay: i * 0.2 + 0.5 
                 }}
                 className="relative z-10 pointer-events-none transition-transform duration-500 group-hover:-translate-y-2 group-active:-translate-y-2"
               >
-                <div className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-deep-blue mb-12 group-hover:bg-gold group-active:bg-gold transition-all duration-500 shadow-xl shadow-deep-blue/5">
+                <motion.div 
+                  whileInView={{ backgroundColor: "rgba(212,175,55,1)", color: "rgba(10,25,47,1)" }}
+                  transition={{ delay: i * 0.2 + 1.0, duration: 0.5 }}
+                  className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-deep-blue mb-12 group-hover:bg-gold group-active:bg-gold transition-all duration-500 shadow-xl shadow-deep-blue/5"
+                >
                   {s.icon}
-                </div>
+                </motion.div>
                 <h3 className="text-3xl font-serif mb-6 text-current group-hover:text-white group-active:text-white transition-colors duration-500">
                   {s.title}
                 </h3>
@@ -503,15 +501,19 @@ const Services = () => {
               <div className="relative z-10 space-y-8 pointer-events-none">
                 <div className="flex flex-wrap gap-2">
                   {s.tags.map((tag, j) => (
-                    <span 
+                    <motion.span 
                       key={j} 
+                      whileInView={{ backgroundColor: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.7)", borderColor: "rgba(255,255,255,0.1)" }}
+                      transition={{ delay: i * 0.2 + 1.2, duration: 0.5 }}
                       className="text-[9px] uppercase tracking-widest font-bold text-ink/40 bg-white/50 px-3 py-1 rounded-full border border-deep-blue/5 group-hover:bg-white/10 group-hover:text-white/70 group-hover:border-white/10 group-active:bg-white/10 group-active:text-white/70 group-active:border-white/10 transition-all duration-500"
                     >
                       {tag}
-                    </span>
+                    </motion.span>
                   ))}
                 </div>
                 <motion.div 
+                  whileInView={{ opacity: 1 }}
+                  transition={{ delay: i * 0.2 + 1.4, duration: 0.5 }}
                   className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-gold opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity duration-500"
                 >
                   Learn More <ArrowRight size={14} />
@@ -736,7 +738,7 @@ const Contact = () => {
   return (
     <section id="contact" className="py-16 md:py-32 bg-paper">
       <div className="max-w-7xl mx-auto px-4 md:px-8">
-        <div className="bg-white rounded-[30px] md:rounded-[60px] p-6 md:p-16 lg:p-24 relative overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,0.05)] border border-deep-blue/5">
+        <div className="bg-white rounded-[30px] md:rounded-[60px] p-5 sm:p-8 md:p-16 lg:p-24 relative overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,0.05)] border border-deep-blue/5">
           <div className="absolute top-0 right-0 w-64 md:w-96 h-64 md:h-96 bg-gold/5 rounded-full -mr-32 md:-mr-48 -mt-32 md:-mt-48 blur-3xl"></div>
           
           <div className="grid lg:grid-cols-2 gap-12 md:gap-24 relative z-10">
@@ -749,29 +751,44 @@ const Contact = () => {
                 </h2>
               </div>
 
-              <div className="space-y-6 md:space-y-8 max-w-md mx-auto lg:mx-0">
-                <div className="flex items-center gap-6 md:gap-8 group">
-                  <a href="tel:8855992447" className="w-12 h-12 md:w-16 md:h-16 bg-white rounded-2xl md:rounded-3xl flex items-center justify-center text-gold shadow-xl shadow-deep-blue/5 group-hover:bg-deep-blue group-hover:text-white transition-all duration-500 shrink-0">
-                    <Phone size={24} />
-                  </a>
-                  <div className="text-left space-y-3">
-                    <div>
-                      <div className="text-[10px] uppercase tracking-[0.3em] font-black opacity-30 mb-1">Direct Line 1</div>
-                      <a href="tel:8855992447" className="text-lg md:text-xl font-serif text-deep-blue hover:text-gold transition-colors">8855992447</a>
+              <div className="space-y-6 md:space-y-10 max-w-md mx-auto lg:mx-0">
+                <div className="space-y-4 md:space-y-6">
+                  <div className="flex items-center gap-4 md:gap-6 group">
+                    <a 
+                      href="tel:8855992447" 
+                      className="bg-gold/10 hover:bg-gold text-gold hover:text-deep-blue px-4 md:px-5 py-2 md:py-2.5 rounded-full text-[9px] md:text-[10px] font-bold uppercase tracking-widest transition-all duration-300 flex items-center gap-2 shrink-0 shadow-lg shadow-gold/5"
+                    >
+                      Call <Phone size={10} className="md:w-3 md:h-3" />
+                    </a>
+                    <div className="text-left">
+                      <div className="text-[9px] md:text-[10px] uppercase tracking-[0.3em] font-black opacity-30 mb-0.5 md:mb-1">Direct Line 1</div>
+                      <a href="tel:8855992447" className="text-base md:text-xl font-serif text-deep-blue hover:text-gold transition-colors">8855992447</a>
                     </div>
-                    <div>
-                      <div className="text-[10px] uppercase tracking-[0.3em] font-black opacity-30 mb-1">Direct Line 2</div>
-                      <a href="tel:8983451280" className="text-lg md:text-xl font-serif text-deep-blue hover:text-gold transition-colors">8983451280</a>
+                  </div>
+                  <div className="flex items-center gap-4 md:gap-6 group">
+                    <a 
+                      href="tel:8983451280" 
+                      className="bg-gold/10 hover:bg-gold text-gold hover:text-deep-blue px-4 md:px-5 py-2 md:py-2.5 rounded-full text-[9px] md:text-[10px] font-bold uppercase tracking-widest transition-all duration-300 flex items-center gap-2 shrink-0 shadow-lg shadow-gold/5"
+                    >
+                      Call <Phone size={10} className="md:w-3 md:h-3" />
+                    </a>
+                    <div className="text-left">
+                      <div className="text-[9px] md:text-[10px] uppercase tracking-[0.3em] font-black opacity-30 mb-0.5 md:mb-1">Direct Line 2</div>
+                      <a href="tel:8983451280" className="text-base md:text-xl font-serif text-deep-blue hover:text-gold transition-colors">8983451280</a>
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center gap-6 md:gap-8 group">
-                  <a href="mailto:urjabusinessconsult@gmail.com" className="w-12 h-12 md:w-16 md:h-16 bg-white rounded-2xl md:rounded-3xl flex items-center justify-center text-gold shadow-xl shadow-deep-blue/5 group-hover:bg-deep-blue group-hover:text-white transition-all duration-500 shrink-0">
-                    <Mail size={24} />
+
+                <div className="flex items-center gap-4 md:gap-6 group">
+                  <a 
+                    href="mailto:urjabusinessconsult@gmail.com" 
+                    className="w-10 h-10 md:w-14 md:h-14 bg-white rounded-xl md:rounded-3xl flex items-center justify-center text-gold shadow-xl shadow-deep-blue/5 group-hover:bg-deep-blue group-hover:text-white transition-all duration-500 shrink-0"
+                  >
+                    <Mail size={20} className="md:w-6 md:h-6" />
                   </a>
                   <div className="text-left">
-                    <div className="text-[10px] uppercase tracking-[0.3em] font-black opacity-30 mb-1">Email Inquiry</div>
-                    <a href="mailto:urjabusinessconsult@gmail.com" className="text-lg md:text-xl font-serif text-deep-blue hover:text-gold transition-colors">urjabusinessconsult@gmail.com</a>
+                    <div className="text-[9px] md:text-[10px] uppercase tracking-[0.3em] font-black opacity-30 mb-0.5 md:mb-1">Email Inquiry</div>
+                    <a href="mailto:urjabusinessconsult@gmail.com" className="text-sm md:text-xl font-serif text-deep-blue hover:text-gold transition-colors break-all">urjabusinessconsult@gmail.com</a>
                   </div>
                 </div>
               </div>
@@ -795,7 +812,7 @@ const Contact = () => {
               </div>
             </div>
 
-            <div className="bg-paper/50 p-8 md:p-12 rounded-[30px] md:rounded-[40px] shadow-xl border border-deep-blue/5">
+            <div className="bg-paper/50 p-5 sm:p-8 md:p-12 rounded-[30px] md:rounded-[40px] shadow-xl border border-deep-blue/5">
               <AnimatePresence mode="wait">
                 {status === 'success' ? (
                   <motion.div 
@@ -829,7 +846,7 @@ const Contact = () => {
                     className="space-y-6 md:space-y-8"
                   >
                     <div className="space-y-2">
-                      <label className="text-[10px] uppercase tracking-[0.3em] font-black text-ink/40 ml-4">Your Name</label>
+                      <label className="text-[9px] md:text-[10px] uppercase tracking-[0.3em] font-black text-ink/40 ml-4">Your Name</label>
                       <motion.input 
                         required
                         name="name"
@@ -841,7 +858,7 @@ const Contact = () => {
                         animate={touched.name && errors.name ? "error" : "idle"}
                         variants={inputVariants}
                         className={cn(
-                          "w-full bg-paper border px-6 md:px-8 py-4 md:py-5 rounded-2xl md:rounded-3xl focus:outline-none transition-all text-deep-blue placeholder:text-ink/20 text-sm font-light shadow-inner shadow-black/5",
+                          "w-full bg-paper border px-5 md:px-8 py-3.5 md:py-5 rounded-xl md:rounded-3xl focus:outline-none transition-all text-deep-blue placeholder:text-ink/20 text-sm font-light shadow-inner shadow-black/5",
                           touched.name && errors.name ? "border-red-500/50 shadow-[0_0_15px_rgba(239,68,68,0.05)]" : "border-deep-blue/10 focus:border-gold focus:ring-1 focus:ring-gold/20"
                         )} 
                       />
@@ -859,7 +876,7 @@ const Contact = () => {
                       </AnimatePresence>
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[10px] uppercase tracking-[0.3em] font-black text-ink/40 ml-4">Email Address</label>
+                      <label className="text-[9px] md:text-[10px] uppercase tracking-[0.3em] font-black text-ink/40 ml-4">Email Address</label>
                       <motion.input 
                         required
                         name="email"
@@ -871,7 +888,7 @@ const Contact = () => {
                         animate={touched.email && errors.email ? "error" : "idle"}
                         variants={inputVariants}
                         className={cn(
-                          "w-full bg-paper border px-6 md:px-8 py-4 md:py-5 rounded-2xl md:rounded-3xl focus:outline-none transition-all text-deep-blue placeholder:text-ink/20 text-sm font-light shadow-inner shadow-black/5",
+                          "w-full bg-paper border px-5 md:px-8 py-3.5 md:py-5 rounded-xl md:rounded-3xl focus:outline-none transition-all text-deep-blue placeholder:text-ink/20 text-sm font-light shadow-inner shadow-black/5",
                           touched.email && errors.email ? "border-red-500/50 shadow-[0_0_15px_rgba(239,68,68,0.05)]" : "border-deep-blue/10 focus:border-gold focus:ring-1 focus:ring-gold/20"
                         )} 
                       />
@@ -889,7 +906,7 @@ const Contact = () => {
                       </AnimatePresence>
                     </div>
                     <div className="space-y-2">
-                      <label className="text-[10px] uppercase tracking-[0.3em] font-black text-ink/40 ml-4">Service Interest</label>
+                      <label className="text-[9px] md:text-[10px] uppercase tracking-[0.3em] font-black text-ink/40 ml-4">Service Interest</label>
                       <motion.div
                         animate={touched.service && errors.service ? "error" : "idle"}
                         variants={inputVariants}
@@ -901,7 +918,7 @@ const Contact = () => {
                           onChange={handleChange}
                           onBlur={() => handleBlur('service')}
                           className={cn(
-                            "w-full bg-paper border px-6 md:px-8 py-4 md:py-5 rounded-2xl md:rounded-3xl focus:outline-none transition-all text-deep-blue text-sm font-light appearance-none shadow-inner shadow-black/5",
+                            "w-full bg-paper border px-5 md:px-8 py-3.5 md:py-5 rounded-xl md:rounded-3xl focus:outline-none transition-all text-deep-blue text-sm font-light appearance-none shadow-inner shadow-black/5",
                             touched.service && errors.service ? "border-red-500/50 shadow-[0_0_15px_rgba(239,68,68,0.05)]" : "border-deep-blue/10 focus:border-gold focus:ring-1 focus:ring-gold/20"
                           )}
                         >
@@ -932,7 +949,7 @@ const Contact = () => {
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       disabled={status === 'loading'}
-                      className="w-full bg-deep-blue text-white py-5 md:py-6 rounded-2xl md:rounded-3xl font-black uppercase tracking-[0.3em] text-[10px] md:text-[11px] hover:bg-gold hover:text-deep-blue transition-all duration-500 shadow-2xl shadow-deep-blue/20 disabled:opacity-50"
+                      className="w-full bg-deep-blue text-white py-4 md:py-6 rounded-xl md:rounded-3xl font-black uppercase tracking-[0.3em] text-[9px] md:text-[11px] hover:bg-gold hover:text-deep-blue transition-all duration-500 shadow-2xl shadow-deep-blue/20 disabled:opacity-50"
                     >
                       {status === 'loading' ? 'Sending...' : 'Send Inquiry'}
                     </motion.button>
