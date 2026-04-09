@@ -348,7 +348,7 @@ const Hero = () => {
           <Reveal delay={0.6} y={30}>
             <p className="text-lg md:text-xl text-ink/60 max-w-2xl mx-auto leading-relaxed font-light">
               We don't just consult; we engineer <span className="text-deep-blue font-medium italic">influence</span>. 
-              Partner with Mayur Salunke to dominate your market and lead with unshakeable authority.
+              Partner with Urja to dominate your market and lead with unshakeable authority.
             </p>
           </Reveal>
 
@@ -588,7 +588,7 @@ const About = () => {
           <Reveal delay={0.3}>
             <div className="space-y-6 md:space-y-8 text-base md:text-lg text-ink/60 leading-relaxed font-light max-w-xl mx-auto lg:mx-0">
               <p>
-                Mayur Salunke is a renowned Business and Political Consultant with a mission to bridge the gap between vision and reality. Through Urja Consultancy, he has helped hundreds of entrepreneurs and political aspirants build lasting legacies.
+                Urja Consultancy is a renowned Business and Political Consultant with a mission to bridge the gap between vision and reality. Through Urja Consultancy, We helped hundreds of entrepreneurs and political aspirants build lasting legacies.
               </p>
               <p className="italic border-l-2 border-gold/30 pl-6 md:pl-8 py-2 text-left">
                 "True authority isn't taken; it's engineered through strategic consistency and unshakeable vision."
