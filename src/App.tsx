@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform, useInView, AnimatePresence, useSpring } from 'motion/react';
+import { motion, useScroll, useTransform, useInView, AnimatePresence, useSpring, useMotionValue } from 'motion/react';
 import { 
   Briefcase, 
   Globe, 
@@ -25,9 +25,9 @@ import { cn } from './lib/utils';
 
 // --- Components ---
 
-const Reveal = ({ children, width = "w-full", delay = 0.2, y = 75, x = 0, scale = 1, rotate = 0, duration = 0.8 }: { children: ReactNode, width?: string, delay?: number, y?: number, x?: number, scale?: number, rotate?: number, duration?: number }) => {
+const Reveal = ({ children, width = "w-full", delay = 0.2, y = 30, x = 0, scale = 1, rotate = 0, duration = 0.6 }: { children: ReactNode, width?: string, delay?: number, y?: number, x?: number, scale?: number, rotate?: number, duration?: number }) => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
 
   return (
     <div ref={ref} className={cn("relative", width)}>
@@ -38,7 +38,8 @@ const Reveal = ({ children, width = "w-full", delay = 0.2, y = 75, x = 0, scale 
         }}
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
-        transition={{ duration, delay, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration, delay, ease: [0.25, 0.1, 0.25, 1] }}
+        style={{ willChange: "transform, opacity" }}
       >
         {children}
       </motion.div>
@@ -96,7 +97,8 @@ const Marquee = () => {
       <div className="flex whitespace-nowrap">
         <motion.div 
           animate={{ x: [0, -1000] }}
-          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+          transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+          style={{ willChange: "transform" }}
           className="flex gap-24 items-center"
         >
           {[...items, ...items].map((item, i) => (
@@ -447,7 +449,7 @@ const Services = () => {
           {services.map((s, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ 
                 opacity: 1, 
                 y: 0,
@@ -457,14 +459,15 @@ const Services = () => {
               whileTap={{ scale: 0.98 }}
               viewport={{ once: true, margin: "-10%" }}
               transition={{ 
-                delay: i * 0.15,
+                delay: i * 0.1,
                 backgroundColor: { 
-                  duration: 1.2, 
-                  delay: i * 0.2 + 0.5 
+                  duration: 1, 
+                  delay: i * 0.15 + 0.3 
                 }
               }}
+              style={{ willChange: "transform, opacity, background-color" }}
               className={cn(
-                "p-8 md:p-12 min-h-[400px] md:min-h-[500px] flex flex-col justify-between transition-all duration-500 group relative overflow-hidden rounded-[40px] border border-deep-blue/5 cursor-pointer shadow-2xl shadow-deep-blue/5",
+                "p-8 md:p-12 min-h-[400px] md:min-h-[500px] flex flex-col justify-between group relative overflow-hidden rounded-[40px] border border-deep-blue/5 cursor-pointer shadow-2xl shadow-deep-blue/5",
                 s.color
               )}
             >
@@ -478,14 +481,15 @@ const Services = () => {
                 }}
                 viewport={{ once: true, margin: "-10%" }}
                 transition={{ 
-                  duration: 1.2, 
-                  delay: i * 0.2 + 0.5 
+                  duration: 1, 
+                  delay: i * 0.15 + 0.3 
                 }}
-                className="relative z-10 pointer-events-none transition-transform duration-500 group-hover:-translate-y-2 group-active:-translate-y-2"
+                style={{ willChange: "color, transform" }}
+                className="relative z-10 pointer-events-none group-hover:-translate-y-2 group-active:-translate-y-2 transition-transform duration-500"
               >
                 <motion.div 
                   whileInView={{ backgroundColor: "rgba(212,175,55,1)", color: "rgba(10,25,47,1)" }}
-                  transition={{ delay: i * 0.2 + 1.0, duration: 0.5 }}
+                  transition={{ delay: i * 0.15 + 0.6, duration: 0.4 }}
                   className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center text-deep-blue mb-12 group-hover:bg-gold group-active:bg-gold transition-all duration-500 shadow-xl shadow-deep-blue/5"
                 >
                   {s.icon}
@@ -504,7 +508,7 @@ const Services = () => {
                     <motion.span 
                       key={j} 
                       whileInView={{ backgroundColor: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.7)", borderColor: "rgba(255,255,255,0.1)" }}
-                      transition={{ delay: i * 0.2 + 1.2, duration: 0.5 }}
+                      transition={{ delay: i * 0.15 + 0.8, duration: 0.4 }}
                       className="text-[9px] uppercase tracking-widest font-bold text-ink/40 bg-white/50 px-3 py-1 rounded-full border border-deep-blue/5 group-hover:bg-white/10 group-hover:text-white/70 group-hover:border-white/10 group-active:bg-white/10 group-active:text-white/70 group-active:border-white/10 transition-all duration-500"
                     >
                       {tag}
@@ -513,7 +517,7 @@ const Services = () => {
                 </div>
                 <motion.div 
                   whileInView={{ opacity: 1 }}
-                  transition={{ delay: i * 0.2 + 1.4, duration: 0.5 }}
+                  transition={{ delay: i * 0.15 + 1.0, duration: 0.4 }}
                   className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-gold opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity duration-500"
                 >
                   Learn More <ArrowRight size={14} />
@@ -657,6 +661,7 @@ const Impact = () => {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
+                style={{ willChange: "transform, opacity" }}
                 className="bg-white/5 backdrop-blur-sm p-10 md:p-16 flex flex-col items-center justify-center border border-white/5 group hover:bg-white/10 transition-all duration-700 rounded-[30px] shadow-2xl shadow-black/20"
               >
                 <div className="text-5xl md:text-7xl font-serif text-gold mb-4 group-hover:scale-110 transition-transform duration-700">{s.value}</div>
@@ -1035,28 +1040,32 @@ const Footer = () => {
 };
 
 export default function App() {
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const cursorX = useSpring(mouseX, { damping: 30, stiffness: 200 });
+  const cursorY = useSpring(mouseY, { damping: 30, stiffness: 200 });
+  const dotX = useSpring(mouseX, { damping: 20, stiffness: 300 });
+  const dotY = useSpring(mouseY, { damping: 20, stiffness: 300 });
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
+      mouseX.set(e.clientX);
+      mouseY.set(e.clientY);
     };
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
+  }, [mouseX, mouseY]);
 
   return (
     <div className="relative custom-scrollbar overflow-x-hidden">
       {/* Custom Cursor */}
       <motion.div 
         className="fixed w-8 h-8 border border-gold/30 rounded-full pointer-events-none z-[9999] hidden lg:block"
-        animate={{ x: mousePos.x - 16, y: mousePos.y - 16 }}
-        transition={{ type: "spring", damping: 30, stiffness: 200, restDelta: 0.001 }}
+        style={{ x: cursorX, translateX: -16, y: cursorY, translateY: -16, willChange: "transform" }}
       />
       <motion.div 
         className="fixed w-1 h-1 bg-gold rounded-full pointer-events-none z-[9999] hidden lg:block"
-        animate={{ x: mousePos.x - 2, y: mousePos.y - 2 }}
-        transition={{ type: "spring", damping: 20, stiffness: 300, restDelta: 0.001 }}
+        style={{ x: dotX, translateX: -2, y: dotY, translateY: -2, willChange: "transform" }}
       />
 
       <ScrollProgress />
