@@ -789,7 +789,7 @@ const Contact = () => {
                     href="mailto:urjabusinessconsult@gmail.com" 
                     className="w-10 h-10 md:w-14 md:h-14 bg-white rounded-xl md:rounded-3xl flex items-center justify-center text-gold shadow-xl shadow-deep-blue/5 group-hover:bg-deep-blue group-hover:text-white transition-all duration-500 shrink-0"
                   >
-                    <Mail size={20} className="md:w-3 md:h-3" />
+                    <Mail size={20} className="md:w-6 md:h-6" />
                   </a>
                   <div className="text-left">
                     <div className="text-[9px] md:text-[10px] uppercase tracking-[0.3em] font-black opacity-30 mb-0.5 md:mb-1">Email Inquiry</div>
