@@ -1,15 +1,47 @@
 import express from "express";
+import http from "http";
 import { createServer as createViteServer } from "vite";
 import path from "path";
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 import cors from "cors";
 
-dotenv.config();
+// Defaults from .env.example, then override with .env (so a missing/empty .env still gets SMTP template vars locally).
+dotenv.config({ path: ".env.example" });
+dotenv.config({ path: ".env", override: true });
+
+function listenWithPortFallback(httpServer: http.Server, host: string, startPort: number) {
+  let port = startPort;
+  const maxAttempts = 30;
+
+  const tryListen = () => {
+    const onError = (err: NodeJS.ErrnoException) => {
+      httpServer.off("error", onError);
+      if (err.code === "EADDRINUSE" && port - startPort < maxAttempts) {
+        const busy = port;
+        port += 1;
+        console.warn(`[dev] Port ${busy} is already in use. Trying ${port}...`);
+        tryListen();
+      } else {
+        console.error(err);
+        process.exit(1);
+      }
+    };
+
+    httpServer.once("error", onError);
+    httpServer.listen(port, host, () => {
+      httpServer.off("error", onError);
+      console.log(`Server running on http://localhost:${port}`);
+    });
+  };
+
+  tryListen();
+}
 
 async function startServer() {
   const app = express();
-  const PORT = 3000;
+  const preferredPort = parseInt(process.env.PORT || "3000", 10);
+  const PORT = Number.isFinite(preferredPort) && preferredPort > 0 ? preferredPort : 3000;
 
   app.use(cors());
   app.use(express.json());
@@ -34,15 +66,30 @@ async function startServer() {
     },
   };
 
-  // Optimization for Gmail
+  // Optimization for Gmail (Nodemailer well-known host + STARTTLS on 587)
   if (smtpHost.includes("gmail.com")) {
     delete transporterConfig.host;
     delete transporterConfig.port;
     delete transporterConfig.secure;
     transporterConfig.service = "gmail";
+    transporterConfig.requireTLS = true;
   }
 
   const transporter = nodemailer.createTransport(transporterConfig);
+
+  if (process.env.SMTP_USER && process.env.SMTP_PASS) {
+    transporter.verify((err) => {
+      if (err) {
+        console.error("[SMTP] Outbound mail is misconfigured — emails will fail until this is fixed:", err.message);
+      } else {
+        console.log("[SMTP] Ready (connected to provider as client; no local SMTP daemon is used).");
+      }
+    });
+  } else {
+    console.warn(
+      "[SMTP] SMTP_USER / SMTP_PASS not set. Copy .env.example to .env and add credentials, or define them in .env.example for local dev only."
+    );
+  }
 
   // Health Check
   app.get("/api/health", (req, res) => {
@@ -109,10 +156,15 @@ async function startServer() {
     res.status(500).json({ success: false, message: "Internal Server Error", error: String(err) });
   });
 
-  // Vite middleware for development
+  const httpServer = http.createServer(app);
+
+  // Vite middleware for development — bind HMR to this HTTP server so no extra port (e.g. 24678) is needed.
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
-      server: { middlewareMode: true },
+      server: {
+        middlewareMode: true,
+        hmr: { server: httpServer },
+      },
       appType: "spa",
     });
     app.use(vite.middlewares);
@@ -124,9 +176,10 @@ async function startServer() {
     });
   }
 
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-  });
+  listenWithPortFallback(httpServer, "0.0.0.0", PORT);
 }
 
-startServer();
+startServer().catch((err) => {
+  console.error("Failed to start server:", err);
+  process.exit(1);
+});
