@@ -1,0 +1,19 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[functions]
+  directory = "netlify/functions"
+
+# Map the same path the SPA uses in dev (Express) to a serverless function on Netlify.
+[[redirects]]
+  from = "/api/contact"
+  to = "/.netlify/functions/contact"
+  status = 200
+  force = true
+
+# SPA fallback — must come after API routes.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
